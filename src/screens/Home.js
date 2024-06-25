@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, View, Text } from 'react-native';
 import CustomButton from '../components/customButton';
 
 //tambahkan setCurrentPage sebagai prop
-const NoteCard = ({ item, setCurrentPage }) => (
+const NoteCard = ({ item, setCurrentPage, setCurrentNote, deleteNote }) => (
     <View style={styles.card}>
         <Text style={styles.cardTitle}>{item.title}</Text>
         <Text>{item.desc}</Text>
@@ -11,10 +11,11 @@ const NoteCard = ({ item, setCurrentPage }) => (
             <CustomButton
                 backgroundColor='#2c6bf2'
                 color='#fff'
-                text='ubah'
+                text='Ubah'
                 fontSize={12}
                 width={100}
                 onPress={() => { //tuliskan layar Edit ketika tombol ditekan
+                    setCurrentNote(item)
                     setCurrentPage('edit')
                 }}
             />
@@ -24,14 +25,16 @@ const NoteCard = ({ item, setCurrentPage }) => (
                 text='Hapus'
                 fontSize={12}
                 width={100}
-                onPress={() => {}}
+                onPress={() => {
+                    deleteNote(item.id)
+                }}
             />
         </View>
     </View>
 )
 
 //tambahkan setCurrentPage sebagai prop
-const Home = ({ noteList, setCurrentPage }) => (
+const Home = ({ noteList, setCurrentPage, setCurrentNote, deleteNote }) => (
     <View style={styles.container}>
         <CustomButton
         backgroundColor='#71109e'
@@ -48,7 +51,7 @@ const Home = ({ noteList, setCurrentPage }) => (
             data={noteList}
             //tambahkan function setCurrentPage ke component NoteCard
             renderItem={({ item }) => (
-                <NoteCard item={item} setCurrentPage={setCurrentPage} />
+                <NoteCard item={item} setCurrentPage={setCurrentPage} setCurrentNote={setCurrentNote} deleteNote={deleteNote} />
             )} //function setCurrentPage diteruskan ke App.js dan dijalankan tiap masing-masing tombol ditekan
             keyExtractor={(item) => item.id}
         />
@@ -60,7 +63,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        padding: 20,
+        padding: 25,
     },
     card: {
         padding: 10,
